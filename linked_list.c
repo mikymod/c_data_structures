@@ -47,6 +47,71 @@ struct list_node *list_pop(struct list_node **head)
     return current_head;
 }
 
+struct list_node *list_get_node(struct list_node **head, const unsigned int index)
+{
+    struct list_node *current = *head;
+
+    int i = 0;
+    while (current)
+    {
+        if (i == index)
+        {
+            return current;
+        }
+
+        current = current->next;
+        i++;
+    }
+
+    return NULL;
+}
+
+struct list_node *list_remove(struct list_node **head, struct list_node *item)
+{
+    struct list_node *current = *head;
+    struct list_node *previous = NULL;
+
+    while (current)
+    {
+        if (current == item)
+        {
+            if (previous == NULL)
+            {
+                *head = current->next;
+            }
+            else
+            {
+                previous->next = current->next;
+            }
+
+            free(current);
+            return *head;
+        }
+
+        previous = current;
+        current = current->next;
+    }
+
+    return NULL;
+}
+
+struct list_node *list_reverse(struct list_node **head)
+{
+    struct list_node *current = *head;
+    struct list_node *next = NULL;
+    struct list_node *prev = NULL;
+    while (current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    *head = prev;
+    return *head;
+}
+
 struct string_item
 {
     struct list_node node;
@@ -64,43 +129,20 @@ struct string_item *string_item_new(const char *string)
     return item;
 }
 
-void string_item_remove(struct list_node **head, struct string_item *item)
-{
-    struct list_node *current = *head;
-    struct list_node *previous = NULL;
-
-    while (current)
-    {
-        struct string_item *current_item = (struct string_item *)current;
-        if (strcmp(current_item->string, item->string) == 0)
-        {
-            if (previous == NULL)
-            {
-                *head = current->next;
-            }
-            else
-            {
-                previous->next = current->next;
-            }
-
-            free(current);
-            break;
-        }
-
-        previous = current;
-        current = current->next;
-    }
-}
-
 int main()
 {
     struct string_item *my_linked_list = NULL;
+
     list_append((struct list_node **)&my_linked_list, (struct list_node *)string_item_new("Hello World"));
     list_append((struct list_node **)&my_linked_list, (struct list_node *)string_item_new("Test001"));
     list_append((struct list_node **)&my_linked_list, (struct list_node *)string_item_new("Test002"));
     list_append((struct list_node **)&my_linked_list, (struct list_node *)string_item_new("Last Item of the Linked List"));
 
-    string_item_remove((struct list_node **)&my_linked_list, string_item_new("Last Item of the Linked List"));
+    list_remove((struct list_node **)&my_linked_list, list_get_node((struct list_node **)&my_linked_list, 2));
+    list_remove((struct list_node **)&my_linked_list, list_get_node((struct list_node **)&my_linked_list, 1));
+    list_remove((struct list_node **)&my_linked_list, list_get_node((struct list_node **)&my_linked_list, 0));
+
+    list_reverse((struct list_node **)&my_linked_list);
 
     struct string_item *string_item = my_linked_list;
     while (string_item)
