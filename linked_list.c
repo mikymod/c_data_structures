@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#define PPCAST(x) (struct list_node **)(x)
+#define PCAST(x) (struct list_node *)(x)
+
 struct list_node
 {
     struct list_node *next;
@@ -133,16 +136,16 @@ int main()
 {
     struct string_item *my_linked_list = NULL;
 
-    list_append((struct list_node **)&my_linked_list, (struct list_node *)string_item_new("Hello World"));
-    list_append((struct list_node **)&my_linked_list, (struct list_node *)string_item_new("Test001"));
-    list_append((struct list_node **)&my_linked_list, (struct list_node *)string_item_new("Test002"));
-    list_append((struct list_node **)&my_linked_list, (struct list_node *)string_item_new("Last Item of the Linked List"));
+    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Hello World")));
+    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test001")));
+    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test002")));
+    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Last Item of the Linked List")));
 
-    list_remove((struct list_node **)&my_linked_list, list_get_node((struct list_node **)&my_linked_list, 2));
-    list_remove((struct list_node **)&my_linked_list, list_get_node((struct list_node **)&my_linked_list, 1));
-    list_remove((struct list_node **)&my_linked_list, list_get_node((struct list_node **)&my_linked_list, 0));
+    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 2));
+    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 1));
+    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 0));
 
-    list_reverse((struct list_node **)&my_linked_list);
+    list_reverse(PPCAST(&my_linked_list));
 
     struct string_item *string_item = my_linked_list;
     while (string_item)
