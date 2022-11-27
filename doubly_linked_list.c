@@ -1,5 +1,6 @@
 #include <stddef.h> // required for NULL
 #include <stdlib.h>
+#include <stdio.h>
 
 #define PPCAST(x) (struct list_node **)(x)
 #define PCAST(x) (struct list_node *)(x)
@@ -60,52 +61,81 @@ struct list_node *list_append(struct list_node **head, struct list_node *item)
 
 struct list_node *list_remove(struct list_node **head, struct list_node *item)
 {
-    struct list_node *current = *head;
-    struct list_node *previous = NULL;
-
-    while (current)
+    if (item == NULL)
     {
-        if (current == item)
-        {
-            if (previous == NULL)
-            {
-                *head = current->next;
-            }
-            else
-            {
-                previous->next = current->next;
-            }
-
-            free(current);
-            return *head;
-        }
-
-        previous = current;
-        current = current->next;
+        printf("Item is NULL");
+        return *head;
     }
 
-    return NULL;
+    if (item == *head)
+    {
+        *head = item->next;
+        (*head)->prev = NULL;
+    }
+    else if (item->next == NULL)
+    {
+        struct list_node *previous = item->prev;
+        previous->next = NULL;
+    }
+    else
+    {
+        struct list_node *previous = item->prev;
+        struct list_node *next = item->next;
+        previous->next = next;
+        next->prev = previous;
+    }
+
+    free(item);
+    return *head;
 }
 
-void list_insert_after(struct list_node **head, struct list_node *item, struct list_node *after)
+void list_insert_after(struct list_node *item, struct list_node *after)
 {
     if (item == NULL)
     {
+        printf("Item is NULL");
         return;
     }
 
-    struct list_node *curr_next = item->next;
+    after->next = item->next;
+    after->prev = item;
+
+    if (item->next != NULL)
+    {
+        item->next->prev = after;
+    }
+
     item->next = after;
-    after->next = curr_next;
 }
 
-// struct list_node *list_insert_before(struct list_node **head, struct list_node *item, struct list_node *before)
-// {
-// }
+void list_insert_before(struct list_node **head, struct list_node *item, struct list_node *before)
+{
+    if (item == NULL)
+    {
+        printf("Item is NULL");
+        return;
+    }
 
-// struct list_node *list_shuffle(struct list_node **head)
-// {
-// }
+    if (item == *head)
+    {
+        *head = before;
+        item->prev = before;
+        before->next = item;
+        before->prev = NULL;
+    }
+    else
+    {
+        before->prev = item->prev;
+        before->next = item;
+        item->prev->next = before;
+        item->prev = before;
+    }
+}
+
+struct list_node *list_shuffle(struct list_node **head)
+{
+    // TODO
+}
 
 struct string_item
 {
@@ -124,7 +154,18 @@ struct string_item *string_item_new(const char *string)
     return item;
 }
 
-int main()
+void list_string_print(struct string_item **head)
+{
+    struct string_item *string_item = *head;
+    while (string_item)
+    {
+        printf("value: %s, curr: %p, prev: %p, next: %p\n", string_item->string, string_item, string_item->node.prev, string_item->node.next);
+        string_item = (struct string_item *)string_item->node.next;
+    }
+    printf("---------\n");
+}
+
+int main(int argc, char **argv)
 {
     struct string_item *my_linked_list = NULL;
 
@@ -132,15 +173,28 @@ int main()
     list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test001")));
     list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test002")));
     list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Last Item of the Linked List")));
+    list_string_print(PPCAST(&my_linked_list));
 
-    list_insert_after(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 10), PCAST(string_item_new("Test003")));
+    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 2));
+    list_string_print(PPCAST(&my_linked_list));
 
-    struct string_item *string_item = my_linked_list;
-    while (string_item)
-    {
-        printf("%s\n", string_item->string);
-        string_item = (struct string_item *)string_item->node.next;
-    }
+    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 0));
+    list_string_print(PPCAST(&my_linked_list));
+
+    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 1));
+    list_string_print(PPCAST(&my_linked_list));
+
+    list_insert_after(list_get_node(PPCAST(&my_linked_list), 0), PCAST(string_item_new("After001")));
+    list_string_print(PPCAST(&my_linked_list));
+
+    list_insert_after(list_get_node(PPCAST(&my_linked_list), 0), PCAST(string_item_new("After002")));
+    list_string_print(PPCAST(&my_linked_list));
+
+    list_insert_before(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 0), PCAST(string_item_new("Before001")));
+    list_string_print(PPCAST(&my_linked_list));
+
+    list_insert_before(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 2), PCAST(string_item_new("Before002")));
+    list_string_print(PPCAST(&my_linked_list));
 
     return 0;
 }
