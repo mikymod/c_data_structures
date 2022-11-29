@@ -1,15 +1,7 @@
 #include <stddef.h> // required for NULL
 #include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
-#define PPCAST(x) (struct list_node **)(x)
-#define PCAST(x) (struct list_node *)(x)
-
-struct list_node
-{
-    struct list_node *next;
-};
+#include "linked_list.h"
 
 struct list_node *list_get_tail(struct list_node **head)
 {
@@ -114,46 +106,4 @@ struct list_node *list_reverse(struct list_node **head)
 
     *head = prev;
     return *head;
-}
-
-struct string_item
-{
-    struct list_node node;
-    const char *string;
-};
-
-struct string_item *string_item_new(const char *string)
-{
-    struct string_item *item = malloc(sizeof(struct string_item));
-    if (!item)
-    {
-        return NULL;
-    }
-    item->string = string;
-    return item;
-}
-
-int main()
-{
-    struct string_item *my_linked_list = NULL;
-
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Hello World")));
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test001")));
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test002")));
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Last Item of the Linked List")));
-
-    list_reverse(PPCAST(&my_linked_list));
-
-    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 2));
-    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 1));
-    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 0));
-
-    struct string_item *string_item = my_linked_list;
-    while (string_item)
-    {
-        printf("%s\n", string_item->string);
-        string_item = (struct string_item *)string_item->node.next;
-    }
-
-    return 0;
 }
