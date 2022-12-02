@@ -1,11 +1,14 @@
 #ifndef SET_H
 #define SET_H
 
+// forward decl
+struct list_node;
+
 struct set_node
 {
+    struct list_node *next;
     const char *key;
     size_t key_len;
-    struct set_node *next;
 };
 
 struct set_table

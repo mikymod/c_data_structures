@@ -18,10 +18,11 @@ void set_table_display(struct set_table *table)
 
 int main()
 {
-    struct set_table *table = set_table_new(20);
+    struct set_table *table = set_table_new(200);
     set_table_insert(table, "hurt", 4);
-    set_table_insert(table, "myxomatosis", 11);
     set_table_insert(table, "lateralus", 9);
+    set_table_insert(table, "myxomatosis", 11);
+    set_table_insert(table, "tupelo", 6);
     set_table_insert(table, "tupelo", 6);
     set_table_display(table);
 
@@ -35,7 +36,7 @@ int main()
     searched = set_table_search(table, "opus", 4);
     printf("search: %s\n", searched ? searched->key : "not found");
 
-    // set_table_remove(table, "hurt", 4);
+    set_table_remove(table, "hurt", 4);
     set_table_remove(table, "tupelo", 6);
     set_table_display(table);
 

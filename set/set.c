@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "set.h"
+#include "../linked_list/linked_list.h"
 
 size_t djb33x_hash(const char *key, const size_t keylen)
 {
@@ -32,25 +33,14 @@ struct set_table *set_table_new(const size_t hashmap_size)
 
 struct set_node *set_table_insert(struct set_table *table, const char *key, const size_t key_len)
 {
-    size_t hash = djb33x_hash(key, key_len);
-    size_t index = hash % table->hashmap_size;
-
-    struct set_node *head = table->nodes[index];
-    if (!head)
+    // Checks for duplicates
+    if (set_table_search(table, key, key_len))
     {
-        table->nodes[index] = malloc(sizeof(struct set_node));
-        if (!table->nodes[index])
-        {
-            return NULL;
-        }
-
-        table->nodes[index]->key = key;
-        table->nodes[index]->key_len = key_len;
-        table->nodes[index]->next = NULL;
-
-        return table->nodes[index];
+        return NULL;
     }
 
+    size_t hash = djb33x_hash(key, key_len);
+    size_t index = hash % table->hashmap_size;
     struct set_node *new_item = malloc(sizeof(struct set_node));
     if (!new_item)
     {
@@ -59,15 +49,7 @@ struct set_node *set_table_insert(struct set_table *table, const char *key, cons
 
     new_item->key = key;
     new_item->key_len = key_len;
-    new_item->next = NULL;
-    struct set_node *tail = head;
-    while (head)
-    {
-        tail = head;
-        head = head->next;
-    }
-
-    tail->next = new_item;
+    return (struct set_node *)list_append(PPCAST(&table->nodes[index]), PCAST(new_item));
 }
 
 struct set_node *set_table_search(struct set_table *table, const char *key, const size_t key_len)
@@ -100,7 +82,5 @@ struct set_node *set_table_remove(struct set_table *table, const char *key, cons
         return NULL;
     }
 
-    // TODO
-
-    return NULL;
+    return (struct set_node *)list_remove(PPCAST(&table->nodes[index]), PCAST(current));
 }
