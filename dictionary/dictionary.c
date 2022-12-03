@@ -24,13 +24,19 @@ struct dictionary *dictionary_new(const size_t hashmap_size)
         return NULL;
     }
 
-    dict->collision_count = 0;
+    dict->collisions_count = 0;
 
     return dict;
 }
 
 struct dictionary_node *dictionary_insert(struct dictionary *dict, const char *key, const size_t key_len, void *data)
 {
+    // Checks for duplicates
+    if (dictionary_search(dict, key, key_len))
+    {
+        return NULL;
+    }
+
     size_t hash = djb33x_hash(key, key_len);
     size_t index = hash % dict->hashmap_size;
 

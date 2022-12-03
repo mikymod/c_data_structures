@@ -6,6 +6,8 @@
 void dictionary_display(struct dictionary *dict)
 {
     struct dictionary_node **set_nodes = dict->nodes;
+    printf("hashmap_size: %d\n", dict->hashmap_size);
+    printf("collisions: %d\n", dict->collisions_count);
     for (int i = 0; i < dict->hashmap_size; i++)
     {
         struct dictionary_node *head = set_nodes[i];

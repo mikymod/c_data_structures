@@ -13,7 +13,7 @@ struct dictionary
 {
     struct dictionary_node **nodes;
     size_t hashmap_size;
-    size_t collision_count;
+    size_t collisions_count;
 };
 
 struct dictionary *dictionary_new(const size_t hashmap_size);
