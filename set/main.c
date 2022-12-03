@@ -14,6 +14,7 @@ void set_table_display(struct set_table *table)
             head = head->next;
         }
     }
+    printf("----------\n");
 }
 
 int main()
@@ -38,6 +39,14 @@ int main()
 
     set_table_remove(table, "hurt", 4);
     set_table_remove(table, "tupelo", 6);
+    set_table_display(table);
+    set_table_remove(table, "lateralus", 9);
+    set_table_display(table);
+    set_table_remove(table, "myxomatosis", 11);
+    set_table_display(table);
+
+    set_table_insert(table, "hurt", 4);
+    set_table_insert(table, "lateralus", 9);
     set_table_display(table);
 
     return 0;
