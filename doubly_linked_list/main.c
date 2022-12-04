@@ -36,46 +36,46 @@ int main(int argc, char **argv)
 
     struct string_item *my_linked_list = NULL;
 
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Hello World")));
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test001")));
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test002")));
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Last Item of the Linked List")));
+    dlist_append(PPCAST(&my_linked_list), PCAST(string_item_new("Hello World")));
+    dlist_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test001")));
+    dlist_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test002")));
+    dlist_append(PPCAST(&my_linked_list), PCAST(string_item_new("Last Item of the Linked List")));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_pop(PPCAST(&my_linked_list));
-    list_pop(PPCAST(&my_linked_list));
-    list_pop(PPCAST(&my_linked_list));
-    list_pop(PPCAST(&my_linked_list));
+    dlist_pop(PPCAST(&my_linked_list));
+    dlist_pop(PPCAST(&my_linked_list));
+    dlist_pop(PPCAST(&my_linked_list));
+    dlist_pop(PPCAST(&my_linked_list));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Hello World")));
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test001")));
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test002")));
-    list_append(PPCAST(&my_linked_list), PCAST(string_item_new("Last Item of the Linked List")));
+    dlist_append(PPCAST(&my_linked_list), PCAST(string_item_new("Hello World")));
+    dlist_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test001")));
+    dlist_append(PPCAST(&my_linked_list), PCAST(string_item_new("Test002")));
+    dlist_append(PPCAST(&my_linked_list), PCAST(string_item_new("Last Item of the Linked List")));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 2));
+    dlist_remove(PPCAST(&my_linked_list), dlist_get_node(PPCAST(&my_linked_list), 2));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 0));
+    dlist_remove(PPCAST(&my_linked_list), dlist_get_node(PPCAST(&my_linked_list), 0));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_remove(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 1));
+    dlist_remove(PPCAST(&my_linked_list), dlist_get_node(PPCAST(&my_linked_list), 1));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_insert_after(list_get_node(PPCAST(&my_linked_list), 0), PCAST(string_item_new("After001")));
+    dlist_insert_after(dlist_get_node(PPCAST(&my_linked_list), 0), PCAST(string_item_new("After001")));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_insert_after(list_get_node(PPCAST(&my_linked_list), 0), PCAST(string_item_new("After002")));
+    dlist_insert_after(dlist_get_node(PPCAST(&my_linked_list), 0), PCAST(string_item_new("After002")));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_insert_before(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 0), PCAST(string_item_new("Before001")));
+    dlist_insert_before(PPCAST(&my_linked_list), dlist_get_node(PPCAST(&my_linked_list), 0), PCAST(string_item_new("Before001")));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_insert_before(PPCAST(&my_linked_list), list_get_node(PPCAST(&my_linked_list), 2), PCAST(string_item_new("Before002")));
+    dlist_insert_before(PPCAST(&my_linked_list), dlist_get_node(PPCAST(&my_linked_list), 2), PCAST(string_item_new("Before002")));
     list_string_print(PPCAST(&my_linked_list));
 
-    list_shuffle(PPCAST(&my_linked_list));
+    dlist_shuffle(PPCAST(&my_linked_list));
     list_string_print(PPCAST(&my_linked_list));
 
     return 0;

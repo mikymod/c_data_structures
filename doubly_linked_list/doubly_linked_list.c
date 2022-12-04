@@ -4,7 +4,7 @@
 
 #include "doubly_linked_list.h"
 
-struct dlist_node *list_get_tail(struct dlist_node **head)
+struct dlist_node *dlist_get_tail(struct dlist_node **head)
 {
     struct dlist_node *current_node = *head;
     struct dlist_node *last_node = NULL;
@@ -16,7 +16,7 @@ struct dlist_node *list_get_tail(struct dlist_node **head)
     return last_node;
 }
 
-struct dlist_node *list_get_node(struct dlist_node **head, const unsigned int index)
+struct dlist_node *dlist_get_node(struct dlist_node **head, const unsigned int index)
 {
     // FIXME: check bounds
     struct dlist_node *current = *head;
@@ -36,9 +36,9 @@ struct dlist_node *list_get_node(struct dlist_node **head, const unsigned int in
     return NULL;
 }
 
-struct dlist_node *list_append(struct dlist_node **head, struct dlist_node *item)
+struct dlist_node *dlist_append(struct dlist_node **head, struct dlist_node *item)
 {
-    struct dlist_node *tail = list_get_tail(head);
+    struct dlist_node *tail = dlist_get_tail(head);
     if (!tail)
     {
         *head = item;
@@ -52,7 +52,7 @@ struct dlist_node *list_append(struct dlist_node **head, struct dlist_node *item
     return item;
 }
 
-struct dlist_node *list_pop(struct dlist_node **head)
+struct dlist_node *dlist_pop(struct dlist_node **head)
 {
     struct dlist_node *current_head = *head;
     if (!current_head)
@@ -72,11 +72,10 @@ struct dlist_node *list_pop(struct dlist_node **head)
     return current_head;
 }
 
-struct dlist_node *list_remove(struct dlist_node **head, struct dlist_node *item)
+struct dlist_node *dlist_remove(struct dlist_node **head, struct dlist_node *item)
 {
     if (item == NULL)
     {
-        printf("Remove: Item is NULL");
         return NULL;
     }
 
@@ -101,11 +100,10 @@ struct dlist_node *list_remove(struct dlist_node **head, struct dlist_node *item
     return item;
 }
 
-void list_insert_after(struct dlist_node *item, struct dlist_node *after)
+void dlist_insert_after(struct dlist_node *item, struct dlist_node *after)
 {
     if (item == NULL)
     {
-        printf("Item is NULL");
         return;
     }
 
@@ -120,11 +118,10 @@ void list_insert_after(struct dlist_node *item, struct dlist_node *after)
     item->next = after;
 }
 
-void list_insert_before(struct dlist_node **head, struct dlist_node *item, struct dlist_node *before)
+void dlist_insert_before(struct dlist_node **head, struct dlist_node *item, struct dlist_node *before)
 {
     if (item == NULL)
     {
-        printf("Item is NULL");
         return;
     }
 
@@ -144,7 +141,7 @@ void list_insert_before(struct dlist_node **head, struct dlist_node *item, struc
     }
 }
 
-size_t list_size(struct dlist_node **head)
+size_t dlist_size(struct dlist_node **head)
 {
     struct dlist_node *item = *head;
 
@@ -163,9 +160,9 @@ size_t list_size(struct dlist_node **head)
     return size;
 }
 
-void list_shuffle(struct dlist_node **head)
+void dlist_shuffle(struct dlist_node **head)
 {
-    int size = list_size(head);
+    int size = dlist_size(head);
 
     // TODO: make list_copy(ptr)
     struct dlist_node **copy = malloc(size * sizeof(struct dlist_node));
@@ -192,13 +189,12 @@ void list_shuffle(struct dlist_node **head)
         } while (!index_unique);
 
         index_array[i] = index;
-        printf("index: %d\n", index_array[i]);
     }
 
     // Stores pointers in array
     for (int i = 0; i < size; i++)
     {
-        head[i] = list_get_node(copy, index_array[i]);
+        head[i] = dlist_get_node(copy, index_array[i]);
     }
 
     // Restores links
