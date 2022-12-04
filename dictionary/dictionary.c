@@ -64,7 +64,7 @@ void _dictionary_resize(struct dictionary *dict)
     free(tmp);
 }
 
-struct dictionary_node *dictionary_insert(struct dictionary *dict, const char *key, const size_t key_len, void *data)
+struct dictionary_node *dictionary_insert(struct dictionary *dict, void *key, const size_t key_len, void *data)
 {
     // Checks for duplicates
     if (dictionary_search(dict, key, key_len))
@@ -104,7 +104,7 @@ struct dictionary_node *dictionary_insert(struct dictionary *dict, const char *k
     return NULL;
 }
 
-struct dictionary_node *dictionary_remove(struct dictionary *dict, const char *key, const size_t key_len)
+struct dictionary_node *dictionary_remove(struct dictionary *dict, void *key, const size_t key_len)
 {
     size_t hash = djb33x_hash(key, key_len);
     size_t index = hash % dict->hashmap_size;
@@ -118,7 +118,7 @@ struct dictionary_node *dictionary_remove(struct dictionary *dict, const char *k
     return (struct dictionary_node *)list_remove(PPCAST(&dict->nodes[index]), PCAST(current));
 }
 
-struct dictionary_node *dictionary_search(struct dictionary *dict, const char *key, const size_t key_len)
+struct dictionary_node *dictionary_search(struct dictionary *dict, void *key, const size_t key_len)
 {
     size_t hash = djb33x_hash(key, key_len);
     size_t index = hash % dict->hashmap_size;

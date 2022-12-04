@@ -20,13 +20,16 @@ int main()
     dictionary_insert(dict, "porcupine_tree", 14, "fucking data");
     dictionary_insert(dict, "nick_cave", 9, "fucking data");
 
-    // struct dictionary_node *searched = NULL;
-    // searched = dictionary_search(dict, "tool", 4);
-    // printf("searched: [key: %s, data: %s]\n", searched->key, (const char *)searched->data);
+    int key = 12;
+    dictionary_insert(dict, &key, sizeof(int), "fucking data");
 
-    // dictionary_remove(dict, "the_cure", 8);
-    // dictionary_remove(dict, "the_smiths", 10);
-    // dictionary_display(dict);
+    struct dictionary_node *searched = NULL;
+    searched = dictionary_search(dict, (void *)"tool", 4);
+    printf("searched: [key: %s, data: %s]\n", searched->key, (const char *)searched->data);
+
+    dictionary_remove(dict, "the_cure", 8);
+    dictionary_remove(dict, "the_smiths", 10);
+    dictionary_display(dict);
 
     return 0;
 }
